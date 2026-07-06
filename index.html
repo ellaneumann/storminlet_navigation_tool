@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storm Inlet Navigation Tool - Custer Ave Sewershed</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="map"></div>
+
+    <div id="layer-control" class="layer-panel">
+        <h3>Layers</h3>
+        <div class="layer-items">
+            <label>
+                <input type="checkbox" id="toggle-sewershed" checked> 
+                Custer Ave Sewershed
+            </label>
+            <label>
+                <input type="checkbox" id="toggle-inlets" checked> 
+                Storm Inlets
+            </label>
+            <label>
+                <input type="checkbox" id="toggle-manhole" checked> 
+                Storm Manholes
+            </label>
+            <label>
+                <input type="checkbox" id="toggle-subcatchment" checked> 
+                Subcatchments
+            </label>
+            <label>
+                <input type="checkbox" id="toggle-rivers" checked> 
+                Rivers & Streams
+            </label>
+            <label>
+                <input type="checkbox" id="toggle-divide"> 
+                Continental Divide
+            </label>
+        </div>
+
+        <hr style="margin: 12px 0; border: none; border-top: 1px solid #ddd;">
+
+        <h3 style="margin-top: 12px;">Navigation</h3>
+        <button onclick="navigateToNearest()" class="btn-navigate-panel">Navigate to Nearest Inlet</button>
+        <p id="nearest-inlet-info" style="font-size: 12px; color: #666; margin-top: 8px; text-align: center;"></p>
+    </div>
+
+    <div id="legend" class="legend-panel">
+        <h3>Legend</h3>
+        <div class="legend-item">
+            <span class="legend-color" style="background: #0099ff;"></span> Storm Inlets
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background: #9933ff;"></span> Storm Manholes
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background: #ff6600; border: 2px dashed;"></span> Sewershed
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background: #00cc99;"></span> Subcatchments
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background: #0066cc;"></span> Rivers/Streams
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background: #cc00cc;"></span> Continental Divide
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background: #ff6b35;"></span> Your Location
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background: #ff0000; border: 2px dashed;"></span> Navigation Route
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="map.js"></script>
+</body>
+</html>

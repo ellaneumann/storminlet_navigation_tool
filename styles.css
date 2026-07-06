@@ -1,0 +1,177 @@
+* {
+    margin: 0;           /* Remove all default spacing */
+    padding: 0;          /* Remove all default padding */
+    box-sizing: border-box;  /* Width includes padding and border */
+}
+
+html, body {
+    height: 100%;      
+    width: 100%;        
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f0f0; 
+}
+
+#map {
+    height: 100%;       
+    width: 100%;         
+    z-index: 1;          /* Layer depth: map is behind panels */
+}
+
+
+.layer-panel {
+    position: fixed;           
+    top: 10px;                  /* 10 pixels from top of screen */
+    left: 10px;                 /* 10 pixels from left of screen */
+    background: white;          /* White background color */
+    padding: 15px;              /* Space inside the panel */
+    border-radius: 8px;         /* Rounded corners (8px radius) */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);  /* Drop shadow effect */
+    z-index: 1000;              /* On top of everything */
+    font-size: 14px;            /* Text size in this panel */
+    max-width: 220px;           /* Maximum width before text wraps */
+}
+
+.layer-panel h3 {
+    margin-bottom: 12px;        /* Space below the heading */
+    font-size: 16px;            /* Title text size */
+    color: #333;                /* Dark gray text color */
+    border-bottom: 2px solid #0099ff;  /* Blue line under title */
+    padding-bottom: 8px;        /* Space between text and line */
+}
+
+.layer-items label {
+    display: flex;              /* Arrange items horizontally */
+    align-items: center;        /* Center items vertically */
+    margin-bottom: 8px;         /* Space between each checkbox row */
+    cursor: pointer;            /* Change mouse to pointing hand */
+    user-select: none;          /* Don't let user select/highlight text */
+}
+
+.layer-items input[type="checkbox"] {
+    margin-right: 8px;          /* Space between checkbox and text */
+    cursor: pointer;            /* Hand cursor on checkbox */
+    width: 18px;                /* Checkbox width */
+    height: 18px;               /* Checkbox height */
+}
+
+
+.layer-items label:hover {
+    color: #0099ff;             
+    font-weight: bold;          
+}
+
+.legend-panel {
+    position: fixed;            /* Stays in place when map moves */
+    bottom: 10px;               /* 10px from BOTTOM of screen */
+    left: 10px;                 /* 10px from left of screen */
+    background: white;          /* White background */
+    padding: 15px;              /* Space inside */
+    border-radius: 8px;         /* Rounded corners */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);  /* Drop shadow */
+    z-index: 1000;              /* On top of map */
+    font-size: 13px;            /* Text slightly smaller than layer panel */
+    max-height: 300px;          /* Maximum height before scrolling */
+    overflow-y: auto;           /* Add scrollbar if too tall */
+}
+
+.legend-panel h3 {
+    margin-bottom: 10px;        /* Space below heading */
+    font-size: 15px;            /* Heading size */
+    color: #333;                /* Dark gray text */
+    border-bottom: 2px solid #0099ff;  /* Blue underline */
+    padding-bottom: 8px;        /* Space between text and line */
+}
+
+.legend-item {
+    display: flex;              /* Horizontal arrangement */
+    align-items: center;        /* Center items vertically */
+    margin-bottom: 7px;         /* Space between each legend item */
+}
+
+.legend-color {
+    width: 18px;                /* Size of color square */
+    height: 18px;               /* Size of color square */
+    margin-right: 8px;          /* Space between square and text */
+    border-radius: 2px;         /* Slightly rounded corners */
+    border: 1px solid #999;     /* Gray border around square */
+}
+
+
+.leaflet-popup-content {
+    font-size: 13px;            /* Text size in popups */
+    color: #333;                /* Dark gray text color */
+}
+
+
+.leaflet-popup-content h3 {
+    margin-top: 0;              /* No space above heading */
+    margin-bottom: 8px;         /* Space below heading */
+    color: #0099ff;             /* Blue color for popup titles */
+    font-size: 14px;            /* Heading size */
+}
+
+.popup-property {
+    margin-bottom: 6px;         /* Space between property lines */
+    line-height: 1.4;           /* Space between lines in multi-line text */
+}
+
+.popup-property strong {
+    color: #666;                /* Darker gray for labels */
+}
+
+
+.btn-navigate {
+    margin-top: 8px;            /* Space above button */
+    width: 100%;                /* Button takes full width of popup */
+    padding: 8px 12px;          /* Space inside button */
+    background: #0099ff;        /* Blue background color */
+    color: white;               /* White text */
+    border: none;               /* Remove default button border */
+    border-radius: 4px;         /* Slightly rounded corners */
+    cursor: pointer;            /* Hand cursor on hover */
+    font-weight: bold;          /* Bold text */
+    font-size: 12px;            /* Small text */
+    transition: background 0.3s;  /* Smooth color change animation */
+}
+
+
+.btn-navigate:hover {
+    background: #0077cc;        /* Darker blue on hover */
+}
+
+
+@media (max-width: 768px) {
+    /* These styles apply ONLY if screen width ≤ 768px */
+    
+    .layer-panel,
+    .legend-panel {
+        max-width: 180px;       /* Make panels narrower on mobile */
+        font-size: 12px;        /* Reduce text size on small screens */
+    }
+    
+    .layer-panel h3,
+    .legend-panel h3 {
+        font-size: 14px;        /* Slightly smaller headings */
+    }
+}
+
+.btn-navigate-panel {
+    width: 100%;
+    padding: 10px;
+    background: #0099ff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 13px;
+    transition: background 0.3s;
+}
+
+.btn-navigate-panel:hover {
+    background: #0077cc;
+}
+
+.btn-navigate-panel:active {
+    background: #005fa3;
+}
