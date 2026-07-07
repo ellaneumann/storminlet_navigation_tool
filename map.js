@@ -292,7 +292,8 @@ function selectInlet(inletId) {
         for (var i = 0; i < inletMarkers.length; i++) {
             var marker = inletMarkers[i];
             var latlng = marker.getLatLng();
-            if (marker.feature && (marker.feature.properties.id == inletId || marker.feature.properties.objectid == inletId)) {
+            var markerId = (marker.feature.properties.id || marker.feature.properties.objectid || '').toString();
+            if (markerId == inletId) {
                 selectedMarker = marker;
                 selectedInletLocation = latlng;
                 break;
@@ -485,7 +486,7 @@ function navigateToNearest() {
         if (distance < nearestDistance) {
             nearestDistance = distance;
             nearestMarker = marker;
-            nearestId = marker.feature.properties.id || marker.feature.properties.objectid || 'unknown';
+            nearestId = (marker.feature.properties.id || marker.feature.properties.objectid || '').toString();
         }
     }
     
