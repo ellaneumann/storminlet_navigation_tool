@@ -18,17 +18,30 @@ html, body {
 }
 
 
+/* Layer panel and Legend share this fixed-position flex column so they stack
+   vertically and can never overlap, regardless of how tall either one gets. */
+.top-left-stack {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    width: 220px;
+    max-width: calc(100vw - 20px);
+    max-height: calc(100vh - 20px);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
 .layer-panel {
-    position: fixed;           
-    top: 10px;                  /* 10 pixels from top of screen */
-    left: 10px;                 /* 10 pixels from left of screen */
     background: white;          /* White background color */
     padding: 15px;              /* Space inside the panel */
     border-radius: 8px;         /* Rounded corners (8px radius) */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);  /* Drop shadow effect */
-    z-index: 1000;              /* On top of everything */
     font-size: 14px;            /* Text size in this panel */
-    max-width: 220px;           /* Maximum width before text wraps */
+    width: 220px;               /* Fixed width so the stack above/below lines up */
+    flex-shrink: 0;
 }
 
 .layer-panel h3 {
@@ -56,30 +69,23 @@ html, body {
 
 
 .layer-items label:hover {
-    color: #0099ff;             
-    font-weight: bold;          
+    color: #0099ff;
+    font-weight: bold;
 }
 
-.legend-panel {
-    position: fixed;            /* Stays in place when map moves */
-    bottom: 10px;               /* 10px from BOTTOM of screen */
-    left: 10px;                 /* 10px from left of screen */
-    background: white;          /* White background */
-    padding: 15px;              /* Space inside */
-    border-radius: 8px;         /* Rounded corners */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);  /* Drop shadow */
-    z-index: 1000;              /* On top of map */
-    font-size: 13px;            /* Text slightly smaller than layer panel */
-    max-height: 300px;          /* Maximum height before scrolling */
+.layer-items label.sub-layer-item {
+    margin-left: 22px;          /* Indent to show it belongs to the layer above */
+    font-size: 13px;
+}
+
+.layer-items label.sub-layer-item input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+}
+
+#legend-body {
+    max-height: 320px;          /* Maximum height before scrolling */
     overflow-y: auto;           /* Add scrollbar if too tall */
-}
-
-.legend-panel h3 {
-    margin-bottom: 10px;        /* Space below heading */
-    font-size: 15px;            /* Heading size */
-    color: #333;                /* Dark gray text */
-    border-bottom: 2px solid #0099ff;  /* Blue underline */
-    padding-bottom: 8px;        /* Space between text and line */
 }
 
 .legend-item {
@@ -139,18 +145,30 @@ html, body {
     background: #0077cc;        /* Darker blue on hover */
 }
 
+.btn-report {
+    background: white;          /* Outline style so it reads as a separate, secondary action */
+    color: #0099ff;
+    border: 2px solid #0099ff;
+}
+
+.btn-report:hover {
+    background: #f0f8ff;
+}
+
 
 @media (max-width: 768px) {
     /* These styles apply ONLY if screen width ≤ 768px */
     
-    .layer-panel,
-    .legend-panel {
-        max-width: 180px;       /* Make panels narrower on mobile */
+    .top-left-stack {
+        width: 180px;           /* Make the stack narrower on mobile */
+    }
+
+    .layer-panel {
+        width: 180px;
         font-size: 12px;        /* Reduce text size on small screens */
     }
-    
-    .layer-panel h3,
-    .legend-panel h3 {
+
+    .layer-panel h3 {
         font-size: 14px;        /* Slightly smaller headings */
     }
 }
@@ -174,4 +192,322 @@ html, body {
 
 .btn-navigate-panel:active {
     background: #005fa3;
+}
+
+.btn-report-panel {
+    margin-top: 8px;
+    background: white;
+    color: #0099ff;
+    border: 2px solid #0099ff;
+}
+
+.btn-report-panel:hover {
+    background: #f0f8ff;
+}
+
+.btn-report-panel:active {
+    background: #dceeff;
+}
+
+.elevation-legend {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+}
+
+.elevation-legend-title {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 6px;
+}
+
+.elevation-legend-bar {
+    height: 12px;
+    border-radius: 3px;
+    background: linear-gradient(to right, #1a9850, #a6d96a, #ffffbf, #fdae61, #d73027);
+    border: 1px solid #999;
+}
+
+.elevation-legend-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #666;
+    margin-top: 3px;
+}
+
+.about-toggle-btn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: white;
+    color: #0099ff;
+    border: 2px solid #0099ff;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+}
+
+.about-toggle-btn:hover {
+    background: #0099ff;
+    color: white;
+}
+
+.about-panel {
+    position: fixed;
+    top: 56px;
+    right: 10px;
+    width: 360px;
+    max-width: calc(100vw - 20px);
+    max-height: calc(100vh - 76px);
+    overflow-y: auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    font-size: 13px;
+    color: #333;
+}
+
+.about-panel-header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    padding: 12px 16px;
+    border-bottom: 2px solid #0099ff;
+}
+
+.about-panel-header h3 {
+    font-size: 16px;
+    color: #333;
+}
+
+.about-close-btn {
+    background: none;
+    border: none;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    color: #666;
+    padding: 0 0 0 12px;
+}
+
+.about-close-btn:hover {
+    color: #0099ff;
+}
+
+.about-panel-body {
+    padding: 4px 16px 16px;
+    line-height: 1.5;
+}
+
+.about-panel-body h4 {
+    margin-top: 14px;
+    margin-bottom: 6px;
+    color: #0099ff;
+    font-size: 13px;
+}
+
+.about-panel-body p {
+    margin-bottom: 10px;
+}
+
+.about-panel-body blockquote {
+    margin: 0 0 10px;
+    padding: 6px 10px;
+    border-left: 3px solid #0099ff;
+    background: #f5f9ff;
+    font-style: italic;
+    color: #444;
+}
+
+.about-panel-body blockquote footer {
+    margin-top: 4px;
+    font-style: normal;
+    font-size: 11px;
+    color: #777;
+}
+
+.cso-diagram {
+    width: 100%;
+    height: auto;
+    margin: 8px 0 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+.zoning-legend {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+}
+
+.zoning-legend-title {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 6px;
+}
+
+.zoning-legend .legend-item {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.heatmap-legend-bar {
+    height: 14px;
+    border-radius: 3px;
+    background: linear-gradient(to right, #ffffb2, #fed976, #feb24c, #fd8d3c, #f03b20, #bd0026);
+    border: 1px solid #999;
+}
+
+.bottom-right-stack {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 320px;
+    max-width: calc(100vw - 20px);
+    max-height: calc(100vh - 20px);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.collapsible-panel {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    font-size: 13px;
+    color: #333;
+    flex-shrink: 0;
+}
+
+.collapsible-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 2px solid #0099ff;
+}
+
+.collapsible-header h3 {
+    font-size: 15px;
+    color: #333;
+}
+
+.collapsible-caret {
+    color: #0099ff;
+    font-size: 12px;
+}
+
+.collapsible-body {
+    padding: 10px 16px 14px;
+}
+
+.data-table-hint {
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 8px;
+}
+
+.data-table-scroll {
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table thead th {
+    position: sticky;
+    top: 0;
+    background: #f8f8f8;
+    text-align: left;
+    font-size: 11px;
+    color: #666;
+    padding: 6px 6px;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap;
+}
+
+.data-table thead th .th-sub {
+    font-weight: normal;
+    font-size: 10px;
+    color: #999;
+}
+
+.data-table thead th:hover {
+    color: #0099ff;
+}
+
+.data-table thead th.sorted {
+    color: #0099ff;
+}
+
+.data-table thead th.sorted::after {
+    content: ' \25BC';
+    font-size: 9px;
+}
+
+.data-table thead th.sorted.sorted-asc::after {
+    content: ' \25B2';
+}
+
+.data-table tbody td {
+    padding: 6px 6px;
+    border-bottom: 1px solid #eee;
+    font-size: 12px;
+}
+
+.data-table tbody tr {
+    cursor: pointer;
+}
+
+.data-table tbody tr:hover {
+    background: #f0f8ff;
+}
+
+.zoning-swatch {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    margin-right: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+    .bottom-right-stack {
+        width: 260px;
+    }
+}
+
+.elevation-label-icon {
+    color: #222;
+    font-size: 11px;
+    font-weight: bold;
+    text-shadow:
+        -1px -1px 0 #fff, 1px -1px 0 #fff,
+        -1px 1px 0 #fff, 1px 1px 0 #fff,
+        0 0 3px #fff;
+    white-space: nowrap;
+    pointer-events: none;
+    transform: translate(-50%, -22px);
 }

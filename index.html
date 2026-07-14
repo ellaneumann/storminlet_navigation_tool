@@ -11,32 +11,41 @@
 <body>
     <div id="map"></div>
 
+    <div class="top-left-stack">
     <div id="layer-control" class="layer-panel">
         <h3>Layers</h3>
         <div class="layer-items">
             <label>
-                <input type="checkbox" id="toggle-sewershed" checked> 
-                Custer Ave Sewershed
-            </label>
-            <label>
-                <input type="checkbox" id="toggle-inlets" checked> 
+                <input type="checkbox" id="toggle-inlets" checked>
                 Storm Inlets
             </label>
+            <label class="sub-layer-item">
+                <input type="checkbox" id="toggle-elevation">
+                Show Inlet Elevation
+            </label>
+            <label class="sub-layer-item">
+                <input type="checkbox" id="toggle-heatmap">
+                Show Inlet Heatmap
+            </label>
             <label>
-                <input type="checkbox" id="toggle-manhole" checked> 
+                <input type="checkbox" id="toggle-manhole">
                 Storm Manholes
             </label>
             <label>
-                <input type="checkbox" id="toggle-subcatchment" checked> 
-                Subcatchments
+                <input type="checkbox" id="toggle-sewershed" checked>
+                Custer Ave Sewershed Boundary
             </label>
             <label>
-                <input type="checkbox" id="toggle-rivers" checked> 
+                <input type="checkbox" id="toggle-rivers" checked>
                 Rivers & Streams
             </label>
             <label>
-                <input type="checkbox" id="toggle-divide"> 
-                Continental Divide
+                <input type="checkbox" id="toggle-divide" checked>
+                Eastern Continental Divide
+            </label>
+            <label>
+                <input type="checkbox" id="toggle-zoning" checked>
+                Zoning Districts
             </label>
         </div>
 
@@ -45,37 +54,112 @@
         <h3 style="margin-top: 12px;">Navigation</h3>
         <button onclick="navigateToNearest()" class="btn-navigate-panel">Navigate to Nearest Inlet in Custer Ave Sewershed</button>
         <p id="nearest-inlet-info" style="font-size: 12px; color: #666; margin-top: 8px; text-align: center;"></p>
+        <button onclick="reportForLastNearest()" class="btn-navigate-panel btn-report-panel">Storm Inlet Report</button>
     </div>
 
-    <div id="legend" class="legend-panel">
-        <h3>Legend</h3>
-        <div class="legend-item">
-            <span class="legend-color" style="background: #0099ff;"></span> Storm Inlets
+    <div id="legend" class="collapsible-panel">
+        <div class="collapsible-header" data-collapsible-toggle="legend">
+            <h3>Legend</h3>
+            <span class="collapsible-caret" data-collapsible-caret="legend">&#9662;</span>
         </div>
-        <div class="legend-item">
-            <span class="legend-color" style="background: #9933ff;"></span> Storm Manholes
+        <div id="legend-body" class="collapsible-body" data-collapsible-body="legend">
+            <div class="legend-item" data-legend-for="toggle-inlets">
+                <span class="legend-color" style="background: #0099ff;"></span> Storm Inlets
+            </div>
+            <div class="legend-item" data-legend-for="toggle-manhole">
+                <span class="legend-color" style="background: #9933ff;"></span> Storm Manholes
+            </div>
+            <div class="legend-item" data-legend-for="toggle-sewershed">
+                <span class="legend-color" style="background: #ff6600; border: 2px dashed;"></span> Sewershed Boundary
+            </div>
+            <div class="legend-item" data-legend-for="toggle-rivers">
+                <span class="legend-color" style="background: #0066cc;"></span> Rivers/Streams
+            </div>
+            <div class="legend-item" data-legend-for="toggle-divide">
+                <span class="legend-color" style="background: #cc00cc;"></span> Eastern Continental Divide
+            </div>
+            <div class="legend-item" id="legend-your-location" style="display: none;">
+                <span class="legend-color" style="background: #ff6b35;"></span> Your Location
+            </div>
+            <div id="elevation-legend" class="elevation-legend" style="display: none;">
+                <div class="elevation-legend-title">Inlet Ground Elevation (ft)</div>
+                <div class="elevation-legend-bar"></div>
+                <div class="elevation-legend-labels">
+                    <span id="elevation-legend-min">low</span>
+                    <span id="elevation-legend-max">high</span>
+                </div>
+            </div>
+            <div id="heatmap-legend" class="elevation-legend" style="display: none;">
+                <div class="elevation-legend-title">Inlet Density (Heatmap)</div>
+                <div class="heatmap-legend-bar"></div>
+                <div class="elevation-legend-labels">
+                    <span>Low density</span>
+                    <span>High density</span>
+                </div>
+            </div>
+            <div id="zoning-legend" class="zoning-legend" data-legend-for="toggle-zoning">
+                <div class="zoning-legend-title">Zoning Category</div>
+                <div id="zoning-legend-items"></div>
+            </div>
         </div>
-        <div class="legend-item">
-            <span class="legend-color" style="background: #ff6600; border: 2px dashed;"></span> Sewershed
+    </div>
+    </div>
+
+    <div class="bottom-right-stack">
+        <div id="zoning-table-panel" class="collapsible-panel data-table-panel">
+            <div class="collapsible-header" data-collapsible-toggle="zoning-table">
+                <h3>Storm Inlet Density per Zoning District</h3>
+                <span class="collapsible-caret" data-collapsible-caret="zoning-table">&#9662;</span>
+            </div>
+            <div id="zoning-table-body" class="collapsible-body" data-collapsible-body="zoning-table">
+                <p class="data-table-hint">Density = Inlets ÷ Acres. Click a column to sort, a row to zoom to that district.</p>
+                <div class="data-table-scroll">
+                    <table id="zoning-table" class="data-table">
+                        <thead>
+                            <tr>
+                                <th data-sort="ZONECLASS">District</th>
+                                <th data-sort="INLETS">Inlets</th>
+                                <th data-sort="ACRES">Acres</th>
+                                <th data-sort="DENSITY">Density<br><span class="th-sub">(per acre)</span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="zoning-table-rows"></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class="legend-item">
-            <span class="legend-color" style="background: #00cc99;"></span> Subcatchments
+    </div>
+
+    <button id="about-toggle" class="about-toggle-btn" aria-label="About this map">i</button>
+
+    <div id="about-panel" class="about-panel" style="display: none;">
+        <div class="about-panel-header">
+            <h3>About This Map</h3>
+            <button id="about-close" class="about-close-btn" aria-label="Close">&times;</button>
         </div>
-        <div class="legend-item">
-            <span class="legend-color" style="background: #0066cc;"></span> Rivers/Streams
-        </div>
-        <div class="legend-item">
-            <span class="legend-color" style="background: #cc00cc;"></span> Continental Divide
-        </div>
-        <div class="legend-item">
-            <span class="legend-color" style="background: #ff6b35;"></span> Your Location
-        </div>
-        <div class="legend-item">
-            <span class="legend-color" style="background: #ff0000; border: 2px dashed;"></span> Navigation Route
+        <div class="about-panel-body">
+            <p>This map allows you to navigate to storm inlets (also known as storm drain inlets, curb inlets, or catch basins). Storm inlets are places where stormwater (rain, runoff, snow, etc.) enters a pipe network. In this case, the pipe network is the <strong>Custer Avenue Sewershed</strong> in Atlanta, GA. This is a <strong>combined sewer system (CSS)</strong>, meaning stormwater and sewage share the same pipe (see below). This CSS is a part of the historic Intrenchment Creek watershed, whose headwaters run beneath downtown Atlanta and connect to other waterways that lead eventually to the Atlantic Ocean.</p>
+
+            <h4>What is a combined sewer? (This sewershed type)</h4>
+            <p>Combined sewer systems use the same pipe for sewage and stormwater, creating a contaminated, untreated combination of wastewater. On a dry day, wastewater flows to a wastewater treatment plant to be processed. On a wet day, however, if stormwater levels combined with wastewater exceed the combined sewer flow regulator capacity, contaminated wastewater pours into waterways, leaving harmful contaminants in the environment in an event called a combined sewer overflow (CSO).</p>
+
+            <img class="cso-diagram" src="images/css.png" alt="Painting comparing a combined sewer system on a dry day versus a wet day">
+
+            <h4>What is a separate sanitary sewer system? (Not this sewershed type)</h4>
+            <p>Not every sewershed works this way. A separate sanitary sewer system uses one pipe for sewage and a different pipe for stormwater, so stormwater is never treated as wastewater. Rain runoff goes straight to a nearby body of water instead of to a treatment plant, and sanitary sewer overflows are far less common since heavy rain doesn't add volume to the sewage pipe.</p>
+
+            <img class="cso-diagram" src="images/sss.png" alt="Painting comparing a separate sanitary sewer system on a dry day versus a wet day">
+
+            <h4>Why elevation matters</h4>
+            <p>The elevation shown for each storm inlet isn't just trivia — it drives how fast water moves through the system:</p>
+            <blockquote>"The steep uplands (7% slope), feature a large proportion of impervious area and minimal greenspace. Water slows and settles in the shallow lowlands (1% slope)."<footer>— <em>Intrenchment Creek One Water Management Plan</em>, Sept. 2020, p. 2</footer></blockquote>
+            <blockquote>"The Intrenchment Creek headwaters' sharp steep elevations in the upper portions with flatter lowlands in the historic creek channels, promote high velocity erosive flows in the upper basin that slow down and accumulate into flooding in the lower portions."<footer>— <em>Intrenchment Creek One Water Management Plan</em>, Sept. 2020, p. 11</footer></blockquote>
+            <p>In short: inlets high in the watershed shed water fast into the pipe network; once that flow reaches the flatter, lower-elevation basin near Custer Avenue, it slows down, backs up, and is more likely to surcharge or trigger a CSO during heavy rain.</p>
         </div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
     <script src="map.js"></script>
 </body>
 </html>

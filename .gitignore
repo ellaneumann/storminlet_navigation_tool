@@ -1,0 +1,6 @@
+# Full statewide rivers/streams source (~700MB) — too large to commit.
+# geojson_files/rivers_streams_local.geojson is the filtered extract map.js actually loads.
+geojson_files/rivers_streams.geojson
+
+# macOS Finder metadata — never useful to commit.
+.DS_Store
